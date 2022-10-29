@@ -1,5 +1,5 @@
 
-import {AppBar,Box, Container, CssBaseline, Link, Switch, ThemeProvider, Toolbar, Typography}  from '@mui/material';
+import {AppBar,Box, Badge, Container, CssBaseline, Link, Switch, ThemeProvider, Toolbar, Typography}  from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -11,7 +11,7 @@ import { Store } from '../utils/Store';
 export default function Layout({title, description ,children}) {
     
     const { state, dispatch } = useContext(Store);    
-    const { darkMode } = state
+    const { darkMode, cart } = state
     
     const theme = createTheme({
         typography: {
@@ -79,8 +79,26 @@ export default function Layout({title, description ,children}) {
                     </NextLink>
                     </Box> 
                     <Box>
-                        <Switch checked={darkMode} onChange={() => dispatch({type: darkMode? 'DARK_MODE_OFF' : 'DARK_MODE_ON'})} />
-
+                    <Switch
+                checked={darkMode}
+                onChange={darkModeChangeHandler}
+              ></Switch>
+              <NextLink href="/cart" passHref>
+                <Link>
+                  <Typography component="span">
+                    {cart.cartItems.length > 0 ? (
+                      <Badge
+                        color="secondary"
+                        badgeContent={cart.cartItems.length}
+                      >
+                        Cart
+                      </Badge>
+                    ) : (
+                      'Cart'
+                    )}
+                  </Typography>
+                </Link>
+              </NextLink>
                     </Box>
 
                    
