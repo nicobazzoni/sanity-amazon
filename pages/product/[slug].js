@@ -14,20 +14,23 @@ import {
   import Image from 'next/image';
   import NextLink from 'next/link';
   import { useContext, useEffect, useState } from 'react';
-
+  import { useSnackbar } from 'notistack';
   import Layout from '../../components/Layout';
   import classes from '../../utils/classes';
   import client from '../../utils/client';
   import { urlFor, urlForThumbnail } from '../../utils/image';
-
-  
+  import { Store } from '../../utils/Store';
+  import axios from 'axios';
   import { useRouter } from 'next/router';
   
   export default function ProductScreen(props) {
     const router = useRouter();
     const { slug } = props;
- 
-   
+    const {
+      state: { cart },
+      dispatch,
+    } = useContext(Store);
+    const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState({
       product: null,
       loading: true,
@@ -54,7 +57,10 @@ import {
       const existItem = cart.cartItems.find((x) => x._id === product._id);
       const quantity = existItem ? existItem.quantity + 1 : 1;
       const { data } = await axios.get(`/api/products/${product._id}`);
-     
+      if (data.countInStock < quantity) {
+        enqueueSnackbar('Sorry. Product is out of stock', { variant: 'error' });
+        return;
+      }
       dispatch({
         type: 'CART_ADD_ITEM',
         payload: {

@@ -1,5 +1,5 @@
 
-import {AppBar,Box, Container, CssBaseline, Link, ThemeProvider, Toolbar, Typography}  from '@mui/material';
+import {AppBar,Box, Container, CssBaseline, Link, Switch, ThemeProvider, Toolbar, Typography}  from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -33,6 +33,10 @@ export default function Layout({title, description ,children}) {
                 margin: '1rem 0'
             },
 
+            tr: {
+                animation : 'bounce'
+            }
+
         },
         palette: {
             mode: darkMode? 'dark' : 'light',
@@ -46,6 +50,13 @@ export default function Layout({title, description ,children}) {
         },
     });
 
+    const darkModeChangeHandler = () => {
+        dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
+        const newDarkMode = !darkMode;
+        jsCookie.set('darkMode', newDarkMode ? 'ON' : 'OFF');
+    };
+
+
     return (
 
         <>
@@ -58,13 +69,21 @@ export default function Layout({title, description ,children}) {
             <CssBaseline />
             <AppBar position="static" sx={classes.appbar}>
                 <Toolbar sx={classes.toolbar}>
-                    <NextLink href="/" passHref>
-                        <Link>
+                    <Box display='flex' alignItems='center'>
+                      <NextLink href="/" passHref>
+                    <Link>
 
-                        <Typography sx={classes.brand}>BAMBAZON</Typography>
+                    <Typography sx={classes.brand}>BAMBAZON</Typography>
                         
-                        </Link>
+                    </Link>
                     </NextLink>
+                    </Box> 
+                    <Box>
+                        <Switch checked={darkMode} onChange={() => dispatch({type: darkMode? 'DARK_MODE_OFF' : 'DARK_MODE_ON'})} />
+
+                    </Box>
+
+                   
                     </Toolbar>
                     </AppBar>
                     <Container  sx={classes.main} component='main'> {children}

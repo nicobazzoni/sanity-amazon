@@ -11,8 +11,13 @@ import {
   import NextLink from 'next/link';
   import React from 'react';
   import { urlForThumbnail } from '../utils/image';
+  import classes from '../utils/classes';
+
+   
   
   export default function ProductItem({ product, addToCartHandler }) {
+
+    
     return (
       <Card>
         <NextLink href={`/product/${product.slug.current}`} passHref>
@@ -24,7 +29,7 @@ import {
             ></CardMedia>
             <CardContent>
               <Typography>{product.name}</Typography>
-              <Rating value={product.rating} readOnly></Rating>
+              <Rating sx={classes.tr} value={product.rating} readOnly></Rating>
             </CardContent>
           </CardActionArea>
         </NextLink>

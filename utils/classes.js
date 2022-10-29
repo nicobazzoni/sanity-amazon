@@ -65,7 +65,33 @@ const classes = {
       '& span': {
         color: '#000000',
       },
+
     },
-  };
+
+
+    //bounce on hover 
+    '@keyframes bounce': {
+        '0%': {
+            transform: 'translateY(0)',
+        },
+        '50%': {
+            transform: 'translateY(-10px)',
+        },
+        '100%': {
+
+            transform: 'translateY(0)',
+        },
+    },
+    tr: {
+        animation: 'bounce',
+
+    },
+};
+    //end bounce on hover
+
+
+
+
+  
   
   export default classes;
